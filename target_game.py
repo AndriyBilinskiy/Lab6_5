@@ -22,28 +22,23 @@ def get_words(f: str, letters: List[str]) -> List[str]:
     """
     words_that_follow_rules = []
     central_letter = letters[4]
-    
-    letters_counted = [0 for i in range(30)]
-    for i in letters:
-        letters_counted[ord(i) - 97] += 1
-    with open('en.txt') as f:
-        for word in f:
-            word = word.lower()
-            if word.find(central_letter) == -1:
-                continue
-            letters_counted_copy = letters_counted
-            need_to_continue = False
-            for letter in word:
-                print (ord(letter))
-                cur_leetter_position = ord(letter) - 97
-                print(letters_counted_copy)
-                print(cur_leetter_position)
-                letters_counted_copy[cur_leetter_position] -= 1
-                if letters_counted_copy[cur_leetter_position] < 0:
-                    need_to_continue = True
-                    break
-            if need_to_continue:
-                continue
+    data = ''
+    with open("en.txt", 'r') as file:
+        data = file.read()
+    words = data.split('\n')
+    for word in words:
+        if not central_letter in word or len(word) < 4:
+            continue
+        word = word.lower()
+        letters_copy = letters
+        follows_rules = True
+        for letter in word:
+            if letter in letters_copy:
+                letters_copy.replace(letter, '')
+            else :
+                follows_rules = False
+                break
+        if follows_rules:
             words_that_follow_rules.append(word)
     return words_that_follow_rules
 
@@ -72,9 +67,22 @@ def get_pure_user_words(user_words: List[str], letters: List[str], words_from_di
     Checks user words with the rules and returns list of those words
     that are not in dictionary.
     """
-    words_to_check = []
     central_letter = letters[4]
     res = []
+    for i in user_words:
+        if not central_letter in i or len(i) < 4:
+            continue
+        word = i.lower()
+        letters_copy = letters
+        follows_rules = True
+        for letter in word:
+            if letter in letters_copy:
+                letters_copy.replace(letter, '')
+            else :
+                follows_rules = False
+                break
+        if follows_rules and not word in words_from_dict:
+            res.append(word) 
     return res
 
 
@@ -87,9 +95,10 @@ def results():
             letters += j
             print(j, end = ' ')
         print()
-    user_words = get_user_words()
-    dict_words = get_words('en', letters,)
+    user_words = list(get_user_words())
+    dict_words = get_words('en.txt', letters)
     words_not_in_dict = get_pure_user_words(user_words, letters, dict_words)
+    print(user_words)
     for i in words_not_in_dict:
         print(i,end=', ')
     print ("Hasn't been found in the dictionary")
