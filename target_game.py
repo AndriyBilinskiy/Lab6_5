@@ -20,6 +20,8 @@ def get_words(f: str, letters: List[str]) -> List[str]:
     """
     Reads the file f. Checks the words with rules and returns a list of words.
     """
+    str  = ''
+    letters = str.join(letters)
     words_that_follow_rules = []
     central_letter = letters[4]
     data = ''
@@ -98,9 +100,9 @@ def results():
     user_words = list(get_user_words())
     dict_words = get_words('en.txt', letters)
     words_not_in_dict = get_pure_user_words(user_words, letters, dict_words)
-    print(user_words)
     for i in words_not_in_dict:
         print(i,end=', ')
-    print ("Hasn't been found in the dictionary")
+    if len(words_not_in_dict) > 0:
+        print ("Hasn't been found in the dictionary")
     pass
-results()
+
