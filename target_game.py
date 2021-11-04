@@ -59,7 +59,7 @@ def get_user_words() -> List[str]:
             words.append(word)
         except EOFError:
             break
-    return set(words)
+    return words
 
 
 def get_pure_user_words(user_words: List[str], letters: List[str], words_from_dict: List[str]) -> List[str]:
@@ -105,4 +105,5 @@ def results():
     if len(words_not_in_dict) > 0:
         print ("Hasn't been found in the dictionary")
     pass
+results()
 
